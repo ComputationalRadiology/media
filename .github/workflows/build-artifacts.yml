@@ -40,17 +40,16 @@ jobs:
          
       - name: Checkout the VTK repository
         run: |
+          mkdir vtkbuildenv
+          cd vtkbuildenv
           git clone https://gitlab.kitware.com/vtk/vtk.git
           cd vtk
           git checkout v9.0.3
-          ls -las
-          cd ..
-          ls -las
-          mkdir vtkbuildenv
-        
+          
       - name: Configure the VTK build
         run: >-
           cd vtkbuildenv &&
+          mkdir build && cd build &&
           cmake -DCMAKE_INSTALL_PREFIX=/opt/vtk 
           -DCMAKE_INSTALL_RPATH="${CMAKE_INSTALL_PREFIX}/lib"
           -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE
@@ -68,9 +67,9 @@ jobs:
           -DVTK_USE_SYSTEM_GL2PS=OFF
           -DVTK_USE_SYSTEM_LIBHARU=OFF
           -DVTK_USE_SYSTEM_PUGIXML=OFF
-          -DCMAKE_BUILD_TYPE=Release ..
+          -DCMAKE_BUILD_TYPE=Release ../vtk
          
       - name: Build VTK
-        run: cd vtkbuildenv && make -j 2 install
+        run: cd vtkbuildenv/build && make -j 2 install
        
           
