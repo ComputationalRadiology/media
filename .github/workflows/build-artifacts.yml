@@ -12,6 +12,44 @@ jobs:
     steps:
       - name: Setup cmake
         uses: lukka/get-cmake@latest
+        
+      - name: Checkout the VTK repository
+        run: |
+          mkdir vtkbuildenv
+          cd vtkbuildenv
+          git clone https://gitlab.kitware.com/vtk/vtk.git
+          cd vtk
+          git checkout v9.0.3
+          
+      - name: Configure the VTK build
+        run: >-
+          cd vtkbuildenv &&
+          mkdir build && cd build &&
+          cmake -DCMAKE_INSTALL_PREFIX=/opt/vtk 
+          -DCMAKE_INSTALL_RPATH="${CMAKE_INSTALL_PREFIX}/lib"
+          -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE
+          -DVTK_BUILD_ALL_MODULES_FOR_TESTS:BOOL=OFF
+          -DBUILD_TESTING=OFF
+          -DBUILD_EXAMPLES=OFF
+          -DBUILD_DOCUMENTATION=OFF
+          -DVTK_Group_Rendering:BOOL=OFF
+          -DVTK_Group_StandAlone:BOOL=OFF
+          -DVTK_Group_Qt=OFF
+          -DVTK_Group_Imaging=ON
+          -DVTK_Group_Views=ON
+          -DModule_vtkRenderingFreeTypeFontConfig=OFF
+          -DVTK_WRAP_PYTHON=ON
+          -DVTK_PYTHON_VERSION=3
+          -DPYTHON_EXECUTABLE=/usr/bin/python3
+          -DVTK_USE_SYSTEM_LIBRARIES=ON
+          -DVTK_USE_SYSTEM_LIBPROJ4=OFF
+          -DVTK_USE_SYSTEM_GL2PS=OFF
+          -DVTK_USE_SYSTEM_LIBHARU=OFF
+          -DVTK_USE_SYSTEM_PUGIXML=OFF
+          -DCMAKE_BUILD_TYPE=Release ../vtk
+         
+      - name: Build VTK
+        run: cd vtkbuildenv/build && make -j 2 install
     
       - name: Checkout the ITK repository
         uses: actions/checkout@v2
@@ -38,41 +76,6 @@ jobs:
          name: itk4.tar
          path: itk4.tar
          
-      - name: Checkout the VTK repository
-        run: |
-          mkdir vtkbuildenv
-          cd vtkbuildenv
-          git clone https://gitlab.kitware.com/vtk/vtk.git
-          cd vtk
-          git checkout v9.0.3
-          
-      - name: Configure the VTK build
-        run: >-
-          cd vtkbuildenv &&
-          mkdir build && cd build &&
-          cmake -DCMAKE_INSTALL_PREFIX=/opt/vtk 
-          -DCMAKE_INSTALL_RPATH="${CMAKE_INSTALL_PREFIX}/lib"
-          -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE
-          -DVTK_BUILD_ALL_MODULES_FOR_TESTS:BOOL=OFF
-          -DVTK_Group_Rendering:BOOL=OFF
-          -DVTK_Group_StandAlone:BOOL=OFF
-          -DVTK_Group_Qt=ON
-          -DVTK_QT_VERSION=5
-          -DVTK_Group_Imaging=ON
-          -DVTK_Group_Views=ON
-          -DModule_vtkRenderingFreeTypeFontConfig=OFF
-          -DVTK_WRAP_PYTHON=ON
-          -DVTK_PYTHON_VERSION=3
-          -DPYTHON_EXECUTABLE=/usr/bin/python3
-          -DBUILD_TESTING=OFF
-          -DVTK_USE_SYSTEM_LIBRARIES=ON
-          -DVTK_USE_SYSTEM_LIBPROJ4=OFF
-          -DVTK_USE_SYSTEM_GL2PS=OFF
-          -DVTK_USE_SYSTEM_LIBHARU=OFF
-          -DVTK_USE_SYSTEM_PUGIXML=OFF
-          -DCMAKE_BUILD_TYPE=Release ../vtk
-         
-      - name: Build VTK
-        run: cd vtkbuildenv/build && make -j 2 install
+
        
           
