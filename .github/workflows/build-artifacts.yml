@@ -31,11 +31,11 @@ jobs:
           
       - name: Prepare the archive
         run: |
-          tar cvf itk4.tar /opt/itk4
+          tar -cvf itk4.tar /opt/itk4
           
       - uses: actions/upload-artifact@v2
         with:
-         name: itk4
+         name: itk4.tar
          path: itk4.tar
          
          
