@@ -29,3 +29,13 @@ jobs:
           cmake -DCMAKE_INSTALL_PREFIX=/opt/itk4 -DCMAKE_INSTALL_RPATH="${CMAKE_INSTALL_PREFIX}/lib" -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE -DBUILD_EXAMPLES:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=ON -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_FLAGS_RELEASE:STRING="-O3 -DNDEBUG" ../ITK4
           make -j 2 install
           
+      - name: Prepare the archive
+        run: |
+          tar cvf itk4.tar /opt/itk4
+          
+      - uses: actions/upload-artifact@v2
+       with:
+         name: itk4
+         path: itk4.tar
+         
+         
