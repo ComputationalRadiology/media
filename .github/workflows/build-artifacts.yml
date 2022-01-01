@@ -27,49 +27,29 @@ jobs:
           mkdir build && cd build &&
           cmake 
           -DCMAKE_BUILD_TYPE:STRING=Release
+          -DBUILD_SHARED_LIBS:BOOL=OFF
           -DCMAKE_INSTALL_PREFIX=/opt/vtk 
           -DCMAKE_INSTALL_RPATH="${CMAKE_INSTALL_PREFIX}/lib"
           -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE
           -DVTK_BUILD_ALL_MODULES_FOR_TESTS:BOOL=OFF
-          -DBUILD_DOCUMENTATION=OFF
-          -DBUILD_TESTING=OFF
-          -DBUILD_EXAMPLES=OFF
-          -DBUILD_SHARED_LIBS:BOOL=OFF
+          -DVTK_BUILD_DOCUMENTATION=OFF
+          -DVTK_BUILD_TESTING=OFF
+          -DVTK_BUILD_EXAMPLES=OFF
           -DBUILD_USER_DEFINED_LIBS:BOOL=OFF
-          -DVTK_USE_SYSTEM_EXPAT:BOOL=ON
-          -DVTK_USE_SYSTEM_ZLIB:BOOL=ON
           -DVTK_LEGACY_REMOVE=ON         
           -DVTK_ANDROID_BUILD=OFF
           -DVTK_IOS_BUILD=OFF
           -DVTK_EXTRA_COMPILER_WARNINGS=OFF
-          -DVTK_Group_Imaging=OFF
-          -DVTK_Group_MPI=OFF
-          -DVTK_Group_Qt=OFF
-          -DVTK_Group_Rendering:BOOL=OFF
-          -DVTK_RENDERING_BACKEND=None
-          -DVTK_Group_StandAlone:BOOL=OFF
-          -DVTK_Group_Tk:BOOL=OFF
-          -DVTK_Group_Views:BOOL=OFF
           -DVTK_GROUP_ENABLE_Views=NO
           -DVTK_GROUP_ENABLE_Web=NO
           -DVTK_GROUP_ENABLE_Imaging=NO
           -DVTK_GROUP_ENABLE_Qt=DONT_WANT
           -DVTK_GROUP_ENABLE_Rendering=DONT_WANT
-          -DVTK_Group_Web:BOOL=OFF
-          -DModule_vtkCommonCore=ON
-          -DModule_vtkCommonDataModel=ON
-          -DModule_vtkFiltersCore=ON
-          -DModule_vtkImagingStencil=ON
-          -DModule_vtkIOXML=ON
-          -DModule_vtkIOImage=ON
-          -DModule_vtkImagingSources=ON
           -DVTK_PYTHON_VERSION=3
-          -DPYTHON_EXECUTABLE=/usr/bin/python3
-          -DVTK_WRAP_PYTHON=OFF
+          -DVTK_ENABLE_WRAPPING=ON
+          -DVTK_WRAP_PYTHON=ON
           -DVTK_WRAP_JAVA=OFF
-          -DVTK_WRAP_TCL=OFF
           -DVTK_USE_LARGE_DATA=OFF
-          -DVTK_USE_SYSTEM_LIBRARIES=ON
           ../vtk
          
       - name: Build VTK
