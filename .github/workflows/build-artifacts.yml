@@ -19,7 +19,8 @@ jobs:
           cd vtkbuildenv
           git clone https://gitlab.kitware.com/vtk/vtk.git
           cd vtk
-          git checkout v9.0.3
+          git checkout v9.1.0          
+#          git checkout v9.0.3
           
       - name: Configure the VTK build
         run: >-
@@ -54,6 +55,15 @@ jobs:
          
       - name: Build VTK
         run: cd vtkbuildenv/build && make -j 2 install
+        
+      - name: Prepare the VTK archive
+        run: |
+          tar -cvf vtk.tar /opt/vtk
+          
+      - uses: actions/upload-artifact@v2
+        with:
+         name: vtk.tar
+         path: vtk.tar
     
       - name: Checkout the ITK repository
         uses: actions/checkout@v2
