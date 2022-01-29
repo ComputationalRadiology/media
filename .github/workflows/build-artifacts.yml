@@ -88,16 +88,16 @@ jobs:
          name: itk4.tar
          path: itk4.tar
          
+      - name: Make the build directory for the ITK 5 code
+        run: mkdir itk5buildenv
+        
       - name: Checkout the ITK 5 repository
         uses: actions/checkout@v2
         with:
           repository: InsightSoftwareConsortium/ITK
           ref: v5.2.1
-          path: ITK5
-      
-      - name: Make the build directory for the ITK 5 code
-        run: mkdir itk5buildenv
-        
+          path: itk5buildenv/ITK5
+          
       - name: Configure the ITK v5 build
         run: >-
           cd itk5buildenv && mkdir build && cd build &&
