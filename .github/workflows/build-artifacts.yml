@@ -69,9 +69,6 @@ jobs:
           repository: InsightSoftwareConsortium/ITK
           ref: v4.13.3
           path: ITK4
-      
-      - name: Make the build directory for the ITK code
-        run: mkdir itkbuildenv
         
       - name: Configure the ITK build
         run: >-
@@ -94,7 +91,7 @@ jobs:
           
       - uses: actions/upload-artifact@v2
         with:
-         name: itk4.tar
+         name: itk4-static
          path: itk4.tar
          
       - name: Make the build directory for the ITK 5 code
