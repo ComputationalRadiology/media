@@ -60,7 +60,7 @@ jobs:
           
       - uses: actions/upload-artifact@v2
         with:
-         name: vtk.tar
+         name: vtk-shared-libs
          path: vtk.tar
     
       - name: Checkout the ITK repository
@@ -128,7 +128,7 @@ jobs:
           
       - uses: actions/upload-artifact@v2
         with:
-         name: itk5.tar
+         name: itk5-shared-libs
          path: itk5.tar
           
 
@@ -152,5 +152,5 @@ jobs:
  
       - uses: actions/upload-artifact@v2
         with:
-          name: nlopt.tar
+          name: nlopt
           path: nlopt.tar
