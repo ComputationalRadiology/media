@@ -13,6 +13,9 @@ jobs:
       - name: Setup cmake
         uses: lukka/get-cmake@latest
         
+      - name: Install AWS python interface
+        run: pip3 install boto3[crt]
+        
       - name: Checkout the VTK repository
         run: |
           mkdir vtkbuildenv
