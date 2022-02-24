@@ -155,6 +155,31 @@ jobs:
          name: itk5-shared-libs
          path: itk5.tar
 
+      - name: Configure build and install ITK v5
+        run: >-
+          cd itk5buildenv && mkdir buildstatic && cd buildstatic &&
+          cmake
+          -DCMAKE_INSTALL_PREFIX=/opt/itk5 
+          -DCMAKE_INSTALL_RPATH="${CMAKE_INSTALL_PREFIX}/lib"
+          -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE
+          -DBUILD_EXAMPLES:BOOL=OFF
+          -DBUILD_TESTING:BOOL=OFF
+          -DBUILD_SHARED_LIBS:BOOL=OFF
+          -DCMAKE_BUILD_TYPE:STRING=Release
+          -DCMAKE_CXX_FLAGS_RELEASE:STRING="-O3 -DNDEBUG"
+          ../ITK5 &&
+          make -j 2 install
+  
+      - name: Prepare the archive
+        run: |
+          tar -cvf itk5.tar /opt/itk5
+          rm -rf /opt/itk5
+          
+      - uses: actions/upload-artifact@v2
+        with:
+         name: itk5-static-libs
+         path: itk5.tar
+          
       - name: Checkout the NLopt repository
         run: |
           mkdir nloptenv
