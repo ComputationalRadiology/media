@@ -1,6 +1,7 @@
 name: Build Medical Image Analysis software artifacts
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
   pull_request:
