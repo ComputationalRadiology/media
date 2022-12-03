@@ -63,7 +63,7 @@ jobs:
           tar -cvf vtk.tar /opt/vtk
           rm -rf /opt/vtk
           
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
          name: vtk-static-libs
          path: vtk.tar
@@ -106,13 +106,13 @@ jobs:
           tar -cvf vtk.tar /opt/vtk
           rm -rf /opt/vtk
          
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
          name: vtk-shared-libs
          path: vtk.tar
     
       - name: Checkout the ITK repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: InsightSoftwareConsortium/ITK
           ref: v4.13.3
@@ -138,7 +138,7 @@ jobs:
           tar -cvf itk4.tar /opt/itk4
           rm -rf /opt/itk4
           
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
          name: itk4-static-libs
          path: itk4.tar
@@ -163,7 +163,7 @@ jobs:
           tar -cvf itk4.tar /opt/itk4
           rm -rf /opt/itk4
           
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
          name: itk4-shared-libs
          path: itk4.tar
@@ -172,7 +172,7 @@ jobs:
         run: mkdir itk5buildenv
         
       - name: Checkout the ITK 5 repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: InsightSoftwareConsortium/ITK
           ref: v5.2.1
@@ -198,7 +198,7 @@ jobs:
           tar -cvf itk5.tar /opt/itk5
           rm -rf /opt/itk5
           
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
          name: itk5-shared-libs
          path: itk5.tar
@@ -223,7 +223,7 @@ jobs:
           tar -cvf itk5.tar /opt/itk5
           rm -rf /opt/itk5
           
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
          name: itk5-static-libs
          path: itk5.tar
@@ -246,7 +246,7 @@ jobs:
         run: |
           tar -cvf nlopt.tar /opt/nlopt
  
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: nlopt
           path: nlopt.tar
