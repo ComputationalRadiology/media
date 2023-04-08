@@ -1,4 +1,4 @@
-FROM ubuntu:jammy AS crkit-base
+FROM ubuntu:jammy AS crkit-media-base
 ENV DEBIAN_FRONTEND="noninteractive"
 
 # A word about HTTP_PROXY
@@ -88,7 +88,7 @@ WORKDIR /usr/src
 ENV export GIT_HTTP_MAX_REQUEST_BUFFER=100M
 
 RUN mkdir vtksrc && cd vtksrc && \
-    git clone --single-branch --branch v9.1.0 https://gitlab.kitware.com/vtk/vtk.git && \
+    git clone --single-branch --branch v9.2.2 https://gitlab.kitware.com/vtk/vtk.git && \
     mkdir build && \
     cd build && \
     cmake -DCMAKE_INSTALL_PREFIX=/opt/vtk \
@@ -120,7 +120,7 @@ RUN mkdir vtksrc && cd vtksrc && \
     rm -rf /usr/src/vtksrc
 
 ENV VTK_INSTALL_DIR=/opt/vtk
-ENV VTK_DIR=${VTK_INSTALL_DIR}/lib/cmake/vtk-9.1
+ENV VTK_DIR=${VTK_INSTALL_DIR}/lib/cmake/vtk-9.2
 
 # ----- Start another clean build without all of the build dependencies
 # This makes a smaller docker image.
@@ -138,13 +138,13 @@ COPY --from=crkit-base /opt/vtk /opt/vtk
 
 # reset ENV variables that are relevant in the new image
 ENV VTK_INSTALL_DIR=/opt/vtk
-ENV VTK_DIR=${VTK_INSTALL_DIR}/lib/cmake/vtk-9.1
+ENV VTK_DIR=${VTK_INSTALL_DIR}/lib/cmake/vtk-9.2
 
 # DEFAULT entrypoint can be changed with --entrypoint
 # ENTRYPOINT ["/bin/sh", "-c", "bash"]
 
 # DEFAULT CMD provides a list of binaries.
-ENV msg="\nList of available binaries in /opt/crkit/bin\n"
+ENV msg="\nList of available binaries in /opt/vtk/bin\n"
 CMD echo $msg; find /opt/vtk/bin -type f -name "*"; echo $msg
 
 # Assume user data volume to be mounted at /data
