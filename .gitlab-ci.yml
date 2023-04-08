@@ -15,7 +15,11 @@ variables:
   # creates them automatically on boot, and creates
   # `/certs/client` to share between the service and job
   # container, thanks to volume mount from config.toml
+  # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
+  DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
 
 services:
   - docker:20.10.23-dind
@@ -29,7 +33,16 @@ build:
   tags: 
     - docker
   script:
-    - git clone https://gitlab.kitware.com/vtk/vtk.git
-    - cd vtk
-    - git checkout v9.1.0
-    - mkdir vtkbuildenv
+    - docker build --pull -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+
+release-image:
+  stage: release
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
+  only:
+    - main
+
+
