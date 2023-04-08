@@ -26,7 +26,8 @@ before_script:
 
 build:
   stage: build
-    - tags: docker
+  tags: 
+    - docker
   script:
     - git clone https://gitlab.kitware.com/vtk/vtk.git
     - cd vtk
