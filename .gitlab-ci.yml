@@ -48,6 +48,14 @@ builditk:
     - docker build --pull -t $CI_REGISTRY_IMAGE:test-crkit-base-itk -f Dockerfile-itk .
     - docker push $CI_REGISTRY_IMAGE:test-crkit-base-itk
 
+buildnlopt:
+  stage: build
+  tags: 
+    - docker
+  script:
+    - docker build --pull -t $CI_REGISTRY_IMAGE:test-crkit-base-nlopt -f Dockerfile-nlopt .
+    - docker push $CI_REGISTRY_IMAGE:test-crkit-base-nlopt
+
 release-image-itk:
   stage: release
   tags:
@@ -67,6 +75,17 @@ release-image-vtk:
     - docker pull $CI_REGISTRY_IMAGE:test-crkit-base-vtk
     - docker tag $CI_REGISTRY_IMAGE:test-crkit-base-vtk $CI_REGISTRY_IMAGE:crkit-base-vtk
     - docker push $CI_REGISTRY_IMAGE:crkit-base-vtk
+  only:
+    - main
+
+release-image-nlopt:
+  stage: release
+  tags:
+    - docker
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:test-crkit-base-nlopt
+    - docker tag $CI_REGISTRY_IMAGE:test-crkit-base-nlopt $CI_REGISTRY_IMAGE:crkit-base-nlopt
+    - docker push $CI_REGISTRY_IMAGE:crkit-base-nlopt
   only:
     - main
 
