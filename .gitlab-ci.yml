@@ -18,8 +18,6 @@ variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
   DOCKER_HOST: tcp://docker:2376
   DOCKER_TLS_CERTDIR: "/certs"
-  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:test-crkit-vtk
-  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:crkit-vtk
 
 services:
   - docker:20.10.23-dind
@@ -34,22 +32,41 @@ before_script:
   - docker info
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
-build:
+buildvtk:
   stage: build
   tags: 
     - docker
   script:
-    - docker build --pull -t $CONTAINER_TEST_IMAGE .
-    - docker push $CONTAINER_TEST_IMAGE
+    - docker build --pull -t $CI_REGISTRY_IMAGE:test-crkit-base-vtk -f Dockerfile-vtk .
+    - docker push $CI_REGISTRY_IMAGE:test-crkit-base-vtk
 
-release-image:
+builditk:
+  stage: build
+  tags: 
+    - docker
+  script:
+    - docker build --pull -t $CI_REGISTRY_IMAGE:test-crkit-base-itk -f Dockerfile-itk .
+    - docker push $CI_REGISTRY_IMAGE:test-crkit-base-itk
+
+release-image-itk:
   stage: release
   tags:
     - docker
   script:
-    - docker pull $CONTAINER_TEST_IMAGE
-    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-    - docker push $CONTAINER_RELEASE_IMAGE
+    - docker pull $CI_REGISTRY_IMAGE:test-crkit-base-itk
+    - docker tag $CI_REGISTRY_IMAGE:test-crkit-base-itk $CI_REGISTRY_IMAGE:crkit-base-itk
+    - docker push $CI_REGISTRY_IMAGE:crkit-base-itk
+  only:
+    - main
+
+release-image-vtk:
+  stage: release
+  tags:
+    - docker
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:test-crkit-base-vtk
+    - docker tag $CI_REGISTRY_IMAGE:test-crkit-base-vtk $CI_REGISTRY_IMAGE:crkit-base-vtk
+    - docker push $CI_REGISTRY_IMAGE:crkit-base-vtk
   only:
     - main
 
