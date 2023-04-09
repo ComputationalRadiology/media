@@ -1,5 +1,5 @@
-FROM ubuntu:jammy AS crkit-media-base
-ENV DEBIAN_FRONTEND="noninteractive"
+FROM ubuntu:jammy AS crkit-media-build-vtk
+ARG DEBIAN_FRONTEND=noninteractive
 
 # A word about HTTP_PROXY
 # On systems that need to access a proxy to download packages, the build
@@ -15,7 +15,7 @@ LABEL maintainer="warfield@crl.med.harvard.edu"
 LABEL vendor="Computational Radiology Laboratory"
 
 # Update the ubuntu.
-RUN apt-get -y update && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y update && \
     apt-get -y upgrade
 
 # FIX THE MISSING LOCALE in ubuntu
@@ -28,7 +28,7 @@ ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 
 # Install the prerequisite software
-RUN apt-get install -y build-essential \
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential \
                        apt-utils \
                        vim \
                        nano \
@@ -126,7 +126,7 @@ ENV VTK_DIR=${VTK_INSTALL_DIR}/lib/cmake/vtk-9.2
 # This makes a smaller docker image.
 FROM ubuntu:jammy AS crkit-vtk
 
-RUN apt-get update && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get install -y --no-install-recommends \
         python3 python3-pip vim nano && \
     apt-get clean && rm -rf /var/lib/apt/lists/* 
@@ -134,7 +134,7 @@ RUN apt-get update && \
 
 # Copy from the build version and re-add necessary dependencies.
 # copy only relevant directories with binaries and .so files for crkit
-COPY --from=crkit-media-base /opt/vtk /opt/vtk
+COPY --from=crkit-media-build-vtk /opt/vtk /opt/vtk
 
 # reset ENV variables that are relevant in the new image
 ENV VTK_INSTALL_DIR=/opt/vtk
