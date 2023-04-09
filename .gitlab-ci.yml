@@ -69,6 +69,8 @@ builditk:
 
 release-image-itk:
   stage: release
+  image:
+    name: docker:20.10.23
   tags:
     - docker
   script:
