@@ -71,6 +71,8 @@ release-image-itk:
   stage: release
   image:
     name: docker:20.10.23
+  services:
+    - docker:20.10.23-dind
   tags:
     - docker
   script:
@@ -82,6 +84,10 @@ release-image-itk:
 
 release-image-vtk:
   stage: release
+  image:
+    name: docker:20.10.23
+  services:
+    - docker:20.10.23-dind
   tags:
     - docker
   script:
@@ -93,6 +99,10 @@ release-image-vtk:
 
 release-image-nlopt:
   stage: release
+  image:
+    name: docker:20.10.23
+  services:
+    - docker:20.10.23-dind
   tags:
     - docker
   script:
