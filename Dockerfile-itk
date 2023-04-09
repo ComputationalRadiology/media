@@ -1,5 +1,5 @@
-FROM ubuntu:jammy AS crkit-media-base
-ENV DEBIAN_FRONTEND="noninteractive"
+FROM ubuntu:jammy AS crkit-media-build-itk
+ARG DEBIAN_FRONTEND=noninteractive
 
 # A word about HTTP_PROXY
 # On systems that need to access a proxy to download packages, the build
@@ -28,7 +28,7 @@ ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 
 # Install the prerequisite software
-RUN apt-get install -y build-essential \
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential \
                        apt-utils \
                        vim \
                        nano \
@@ -107,19 +107,18 @@ RUN mkdir itksrc && cd itksrc && \
 ENV ITK_INSTALL_DIR=/opt/itk
 ENV ITK_DIR=${ITK_INSTALL_DIR}/lib/cmake/ITK-5.3
 
-
 # ----- Start another clean build without all of the build dependencies
 # This makes a smaller docker image.
 FROM ubuntu:jammy AS crkit-itk
 
-RUN apt-get update && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get install -y --no-install-recommends \
         python3 python3-pip vim nano && \
     apt-get clean && rm -rf /var/lib/apt/lists/* 
 
 # Copy from the build version and re-add necessary dependencies.
 # copy only relevant directories with binaries and .so files for crkit
-COPY --from=crkit-media-base /opt/itk /opt/itk
+COPY --from=crkit-media-build-itk /opt/itk /opt/itk
 
 # reset ENV variables that are relevant in the new image
 ENV ITK_INSTALL_DIR=/opt/itk
