@@ -18,18 +18,11 @@ variables:
   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
   DOCKER_TLS_CERTDIR: "/certs"
 
-services:
-  - docker:20.10.23-dind 
-
 stages:
   - build
   - test
   - release
   - deploy
-
-before_script:
-  - docker info
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
 buildnlopt:
   stage: build
@@ -73,40 +66,35 @@ builditk:
 release-image-itk:
   stage: release
   image:
-    name: docker:20.10.23
-  tags:
-    - docker
+    name: gcr.io/go-containerregistry/crane:debug
+    entrypoint: [""]
+  variables:
+    GIT_STRATEGY: none
   script:
-    - docker pull $CI_REGISTRY_IMAGE:test-crkit-base-itk
-    - docker tag $CI_REGISTRY_IMAGE:test-crkit-base-itk $CI_REGISTRY_IMAGE:crkit-base-itk
-    - docker push $CI_REGISTRY_IMAGE:crkit-base-itk
-  only:
-    - main
+    - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - crane cp "${CI_REGISTRY_IMAGE}:test-crkit-base-itk" "${CI_REGISTRY_IMAGE}:crkit-base-itk"
 
 release-image-vtk:
   stage: release
   image:
-    name: docker:20.10.23
-  tags:
-    - docker
+    name: gcr.io/go-containerregistry/crane:debug
+    entrypoint: [""]
+  variables:
+    GIT_STRATEGY: none
   script:
-    - docker pull $CI_REGISTRY_IMAGE:test-crkit-base-vtk
-    - docker tag $CI_REGISTRY_IMAGE:test-crkit-base-vtk $CI_REGISTRY_IMAGE:crkit-base-vtk
-    - docker push $CI_REGISTRY_IMAGE:crkit-base-vtk
-  only:
-    - main
+    - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - crane cp "${CI_REGISTRY_IMAGE}:test-crkit-base-vtk" "${CI_REGISTRY_IMAGE}:crkit-base-vtk"
 
 release-image-nlopt:
   stage: release
   image:
-    name: docker:20.10.23
-  tags:
-    - docker
+    name: gcr.io/go-containerregistry/crane:debug
+    entrypoint: [""]
+  variables:
+    GIT_STRATEGY: none
   script:
-    - docker pull $CI_REGISTRY_IMAGE:test-crkit-base-nlopt
-    - docker tag $CI_REGISTRY_IMAGE:test-crkit-base-nlopt $CI_REGISTRY_IMAGE:crkit-base-nlopt
-    - docker push $CI_REGISTRY_IMAGE:crkit-base-nlopt
-  only:
-    - main
+    - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - crane cp "${CI_REGISTRY_IMAGE}:test-crkit-base-nlopt" "${CI_REGISTRY_IMAGE}:crkit-base-nlopt"
+
 
 
