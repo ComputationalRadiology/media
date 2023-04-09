@@ -19,14 +19,16 @@ LABEL vendor="Computational Radiology Laboratory"
 RUN apt-get -y update && \
     apt-get -y upgrade
 
-# FIX THE MISSING LOCALE in ubuntu focal
-# RUN DEBIAN_FRONTEND=noninteractive apt-get install -y locales \
-#    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-#    && dpkg-reconfigure --frontend=noninteractive locales \
-#    && update-locale LANG=en_US.UTF-8
+# FIX THE MISSING LOCALE in ubuntu
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y locales \
+    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen 
+    && dpkg-reconfigure --frontend=noninteractive locales \
+    && update-locale LANG=en_US.UTF-8
 
-ENV LANG=en_US.UTF-8 
+ENV LANGUAGE=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8 
+ENV LC_TYPE=en_US.UTF-8
 
 # Install the prerequisite software
 RUN apt-get install -y build-essential \
@@ -109,9 +111,24 @@ ENV NLOPT_DIR=${NLOPT_INSTALL_DIR}/lib/cmake/nlopt
 FROM ubuntu:jammy AS crkit-nlopt
 
 RUN apt-get update && \
+    apt-get -y upgrade && \
     apt-get install -y --no-install-recommends \
         python3 python3-pip vim nano && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* 
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+LABEL maintainer="warfield@crl.med.harvard.edu"
+LABEL vendor="Computational Radiology Laboratory"
+
+# FIX THE MISSING LOCALE in ubuntu
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y locales \
+    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen 
+    && dpkg-reconfigure --frontend=noninteractive locales \
+    && update-locale LANG=en_US.UTF-8
+
+ENV LANGUAGE=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8 
+ENV LC_TYPE=en_US.UTF-8
 
 # Copy from the build version and re-add necessary dependencies.
 COPY --from=crkit-media-base /opt/nlopt /opt/nlopt
