@@ -134,7 +134,7 @@ RUN apt-get update && \
 
 # Copy from the build version and re-add necessary dependencies.
 # copy only relevant directories with binaries and .so files for crkit
-COPY --from=crkit-base /opt/vtk /opt/vtk
+COPY --from=crkit-media-base /opt/vtk /opt/vtk
 
 # reset ENV variables that are relevant in the new image
 ENV VTK_INSTALL_DIR=/opt/vtk
