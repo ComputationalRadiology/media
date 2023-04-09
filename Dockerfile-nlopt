@@ -21,7 +21,7 @@ RUN apt-get -y update && \
 
 # FIX THE MISSING LOCALE in ubuntu
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y locales \
-    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen 
+    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
     && dpkg-reconfigure --frontend=noninteractive locales \
     && update-locale LANG=en_US.UTF-8
 
@@ -121,7 +121,7 @@ LABEL vendor="Computational Radiology Laboratory"
 
 # FIX THE MISSING LOCALE in ubuntu
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y locales \
-    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen 
+    && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
     && dpkg-reconfigure --frontend=noninteractive locales \
     && update-locale LANG=en_US.UTF-8
 
