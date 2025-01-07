@@ -112,7 +112,7 @@ jobs:
          path: vtk.tar
     
       - name: Checkout the ITK repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: InsightSoftwareConsortium/ITK
           ref: v4.13.3
@@ -172,7 +172,7 @@ jobs:
         run: mkdir itk5buildenv
         
       - name: Checkout the ITK 5 repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: InsightSoftwareConsortium/ITK
           ref: v5.2.1
