@@ -63,7 +63,7 @@ jobs:
           tar -cvf vtk.tar /opt/vtk
           rm -rf /opt/vtk
           
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
          name: vtk-static-libs
          path: vtk.tar
