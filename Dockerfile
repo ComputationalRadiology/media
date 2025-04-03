@@ -1,4 +1,4 @@
-FROM ubuntu:jammy AS crkit-media-base
+FROM ubuntu:24.04 AS crkit-media-base
 ENV DEBIAN_FRONTEND="noninteractive"
 
 # A word about HTTP_PROXY
