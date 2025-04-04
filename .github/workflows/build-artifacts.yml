@@ -25,7 +25,7 @@ jobs:
           cd vtk
           git checkout v9.4.2          
           
-      - name: Configure the VTK build
+      - name: Configure the VTK build with static libs
         run: >-
           cd vtkbuildenv &&
           mkdir build && cd build &&
@@ -36,8 +36,8 @@ jobs:
           -DCMAKE_INSTALL_RPATH="${CMAKE_INSTALL_PREFIX}/lib"
           -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE
           -DVTK_BUILD_DOCUMENTATION=OFF
-          -DVTK_BUILD_TESTING=ON
-          -DVTK_BUILD_EXAMPLES=ON
+          -DVTK_BUILD_TESTING=OFF
+          -DVTK_BUILD_EXAMPLES=OFF
           -DBUILD_USER_DEFINED_LIBS:BOOL=OFF
           -DVTK_LEGACY_REMOVE=ON         
           -DVTK_ANDROID_BUILD=OFF
@@ -78,8 +78,8 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=/opt/vtk 
           -DCMAKE_INSTALL_RPATH="${CMAKE_INSTALL_PREFIX}/lib"
           -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE
-          -DVTK_BUILD_DOCUMENTATION=OFF
-          -DVTK_BUILD_TESTING=OFF
+          -DVTK_BUILD_DOCUMENTATION=ON
+          -DVTK_BUILD_TESTING=ON
           -DVTK_BUILD_EXAMPLES=OFF
           -DBUILD_USER_DEFINED_LIBS:BOOL=OFF
           -DVTK_LEGACY_REMOVE=ON         
@@ -91,7 +91,6 @@ jobs:
           -DVTK_GROUP_ENABLE_Imaging=NO
           -DVTK_GROUP_ENABLE_Qt=DONT_WANT
           -DVTK_GROUP_ENABLE_Rendering=DONT_WANT
-          -DVTK_PYTHON_VERSION=3
           -DVTK_ENABLE_WRAPPING=ON
           -DVTK_WRAP_PYTHON=ON
           -DVTK_WRAP_JAVA=OFF
