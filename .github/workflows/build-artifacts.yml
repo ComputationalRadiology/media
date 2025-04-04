@@ -110,63 +110,6 @@ jobs:
         with:
          name: vtk-shared-libs
          path: vtk.tar
-    
-      - name: Checkout the ITK repository
-        uses: actions/checkout@v4
-        with:
-          repository: InsightSoftwareConsortium/ITK
-          ref: v4.13.3
-          path: ITK4
-        
-      - name: Configure the ITK4 static build
-        run: >-
-          mkdir itkbuildenv && cd itkbuildenv &&
-          cmake 
-          -DCMAKE_INSTALL_PREFIX=/opt/itk4
-          -DCMAKE_INSTALL_RPATH="${CMAKE_INSTALL_PREFIX}/lib" 
-          -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE 
-          -DBUILD_EXAMPLES:BOOL=OFF 
-          -DBUILD_TESTING:BOOL=OFF 
-          -DBUILD_SHARED_LIBS:BOOL=OFF
-          -DCMAKE_BUILD_TYPE:STRING=Release 
-          -DCMAKE_CXX_FLAGS_RELEASE:STRING="-O3 -DNDEBUG" 
-          ../ITK4 && 
-          make -j 2 install
-          
-      - name: Prepare the archive
-        run: |
-          tar -cvf itk4.tar /opt/itk4
-          rm -rf /opt/itk4
-          
-      - uses: actions/upload-artifact@v4
-        with:
-         name: itk4-static-libs
-         path: itk4.tar
-     
-      - name: Configure the ITK4 shared build
-        run: >-
-          mkdir itkbuildsharedenv && cd itkbuildsharedenv &&
-          cmake 
-          -DCMAKE_INSTALL_PREFIX=/opt/itk4
-          -DCMAKE_INSTALL_RPATH="${CMAKE_INSTALL_PREFIX}/lib" 
-          -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE 
-          -DBUILD_EXAMPLES:BOOL=OFF 
-          -DBUILD_TESTING:BOOL=OFF 
-          -DBUILD_SHARED_LIBS:BOOL=ON
-          -DCMAKE_BUILD_TYPE:STRING=Release 
-          -DCMAKE_CXX_FLAGS_RELEASE:STRING="-O3 -DNDEBUG" 
-          ../ITK4 && 
-          make -j 2 install
-          
-      - name: Prepare the archive
-        run: |
-          tar -cvf itk4.tar /opt/itk4
-          rm -rf /opt/itk4
-          
-      - uses: actions/upload-artifact@v4
-        with:
-         name: itk4-shared-libs
-         path: itk4.tar
          
       - name: Make the build directory for the ITK 5 code
         run: mkdir itk5buildenv
@@ -175,7 +118,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: InsightSoftwareConsortium/ITK
-          ref: v5.2.1
+          ref: v5.4.3
           path: itk5buildenv/ITK5
           
       - name: Configure build and install ITK v5
@@ -232,7 +175,7 @@ jobs:
         run: |
           mkdir nloptenv
           cd nloptenv
-          git clone -b v2.7.0 https://github.com/stevengj/nlopt nlopt
+          git clone -b v2.10.0 https://github.com/stevengj/nlopt nlopt
           
       - name: Configure, build and install the NLopt package
         run: |
