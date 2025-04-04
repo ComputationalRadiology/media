@@ -14,6 +14,11 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
+      - name: Update ubuntu runner
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install mesa-common-dev mesa-utils freeglut3-dev ninja-build
+      
       - name: Setup cmake
         uses: lukka/get-cmake@latest
         
